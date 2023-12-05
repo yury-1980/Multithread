@@ -15,6 +15,12 @@ public class Server {
     private final List<Integer> sharedResource = new ArrayList<>();
     private final RandomUtilImpl randomUtilImpl = new RandomUtilImpl();
 
+    /**
+     * Добавляет элементы в List, из запроса от Client.
+     *
+     * @param request Запрос от Client.
+     * @return Размер List.
+     */
     public Integer processRequest(Request request) {
 
         try {
@@ -27,10 +33,16 @@ public class Server {
         return getSharedResourceSize();
     }
 
+    /**
+     * @return Размер List.
+     */
     public int getSharedResourceSize() {
         return sharedResource.size();
     }
 
+    /**
+     * @return Объект Lock.
+     */
     public Lock getLock() {
         return lock;
     }
