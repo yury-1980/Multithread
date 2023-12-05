@@ -5,18 +5,18 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ClientTest {
+class ServerImplTest {
 
     @BeforeEach
     void setUp() {
     }
 
     @Test
-    void getRequestServer() {
+    void processRequest() {
     }
 
     @Test
-    void getAccumulator() {
+    void getSharedResourceSize() {
     }
 
     @Test

@@ -1,7 +1,7 @@
 package ru.clevertec;
 
-import ru.clevertec.repository.Client;
-import ru.clevertec.repository.Server;
+import ru.clevertec.repository.impl.ClientImpl;
+import ru.clevertec.repository.impl.ServerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,13 @@ public class Main {
         }
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-        Server server = Server.builder()
+        ServerImpl serverImpl = ServerImpl.builder()
                 .build();
-        Client client = Client.builder()
+        ClientImpl clientImpl = ClientImpl.builder()
                 .data(data)
-                .server(server)
+                .server(serverImpl)
                 .build();
-        MyCallable callable = new MyCallable(client, server);
+        MyCallable callable = new MyCallable(clientImpl, serverImpl);
 
         for (int i = 0; i < threadCount; i++) {
             result = executorService.submit(callable);
@@ -45,7 +45,7 @@ public class Main {
         executorService.shutdown();
         executorService.awaitTermination(1L, TimeUnit.HOURS);
 
-        Integer accumulator = client.getAccumulator();
+        Integer accumulator = clientImpl.getAccumulator();
 
         int expectedValue = (1 + n) * (n / 2);
         System.out.println("accumulator = " + accumulator + "    " + "expectedValue = " + expectedValue);

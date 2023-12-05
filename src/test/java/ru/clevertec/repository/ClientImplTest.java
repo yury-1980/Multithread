@@ -3,20 +3,18 @@ package ru.clevertec.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class ServerTest {
+class ClientImplTest {
 
     @BeforeEach
     void setUp() {
     }
 
     @Test
-    void processRequest() {
+    void getRequestServer() {
     }
 
     @Test
-    void getSharedResourceSize() {
+    void getAccumulator() {
     }
 
     @Test
