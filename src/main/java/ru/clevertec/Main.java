@@ -14,12 +14,12 @@ import java.util.concurrent.TimeUnit;
 public class Main {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
 
-        int n = 100; // Размер списка данных
-        int threadCount = 4; // Количество потоков
+        int dataSize = 100;
+        int threadCount = 4;
         Future<Integer> result = null;
 
         List<Integer> data = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
+        for (int i = 1; i <= dataSize; i++) {
             data.add(i);
         }
 
@@ -36,8 +36,8 @@ public class Main {
             result = executorService.submit(callable);
         }
 
-        if (result.get() == n) {
-            System.out.println("Колличество данных совподает: "+ result.get() + " = " + n);
+        if (result.get() == dataSize) {
+            System.out.println("Колличество данных совподает: " + result.get() + " = " + dataSize);
         } else {
             System.out.println("Колличество данных не совподает!");
         }
@@ -47,7 +47,7 @@ public class Main {
 
         Integer accumulator = clientImpl.getAccumulator();
 
-        int expectedValue = (1 + n) * (n / 2);
+        int expectedValue = (1 + dataSize) * (dataSize / 2);
         System.out.println("accumulator = " + accumulator + "    " + "expectedValue = " + expectedValue);
         System.out.println("Контроль на стороне клиента: " + (accumulator == expectedValue ? "Пройден" : "Не пройден"));
     }

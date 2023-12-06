@@ -1,6 +1,5 @@
 package ru.clevertec.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AllTest {
 
-    private int n;
+    private int dataSize;
     private Server server;
     private Client client;
     private int threadCount;
@@ -25,10 +24,10 @@ public class AllTest {
 
     @BeforeEach
     void setUp() {
-        n = 100;
+        dataSize = 100;
         threadCount = 4;
         List<Integer> data = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
+        for (int i = 1; i <= dataSize; i++) {
             data.add(i);
         }
         executorService = Executors.newFixedThreadPool(threadCount);
@@ -48,9 +47,16 @@ public class AllTest {
             executorService.submit(callable);
         }
 
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(10L, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         // when
         Integer actual = client.getAccumulator();
-        int expected = (1 + n) * (n / 2);
+        int expected = (1 + dataSize) * (dataSize / 2);
 
         // then
         Assertions.assertEquals(expected, actual);
@@ -63,21 +69,18 @@ public class AllTest {
             executorService.submit(callable);
         }
 
-        // when
-        int actual = server.getSharedResourceSize();
-        int expected = n;
-
-        // then
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @AfterEach
-    void cleanup() {
         executorService.shutdown();
         try {
-            executorService.awaitTermination(1L, TimeUnit.HOURS);
+            executorService.awaitTermination(10L, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+
+        // when
+        int actual = server.getSharedResourceSize();
+        int expected = dataSize;
+
+        // then
+        Assertions.assertEquals(expected, actual);
     }
 }
