@@ -3,10 +3,11 @@ package ru.clevertec.repository.impl;
 import lombok.Builder;
 import ru.clevertec.repository.Request;
 import ru.clevertec.repository.Server;
-import ru.clevertec.util.impl.RandomUtilImpl;
+import ru.clevertec.util.ConstTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,7 +16,7 @@ public class ServerImpl implements Server {
 
     private final Lock lock = new ReentrantLock();
     private final List<Integer> sharedResource = new ArrayList<>();
-    private final RandomUtilImpl randomUtilImpl = new RandomUtilImpl();
+    private final Random random = new Random();
 
     /**
      * Добавляет элементы в List, из запроса от Client.
@@ -27,7 +28,7 @@ public class ServerImpl implements Server {
     public Integer processRequest(Request request) {
 
         try {
-            Thread.sleep(randomUtilImpl.getRandomFromOneHundredToThousand());
+            Thread.sleep(new Random().nextInt(ConstTime.ONE_HUNDRED, ConstTime.THOUSAND));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

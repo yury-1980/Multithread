@@ -4,8 +4,7 @@ import lombok.Builder;
 import ru.clevertec.repository.Client;
 import ru.clevertec.repository.Request;
 import ru.clevertec.repository.Server;
-import ru.clevertec.util.RandomUtil;
-import ru.clevertec.util.impl.RandomUtilImpl;
+import ru.clevertec.util.ConstTime;
 
 import java.util.List;
 import java.util.Random;
@@ -18,7 +17,6 @@ public class ClientImpl implements Client {
     private final Lock lock = new ReentrantLock();
     private final List<Integer> data;
     private final Server server;
-    private final RandomUtil randomUtil = new RandomUtilImpl();
     private final Random random = new Random();
     private int accumulator;
 
@@ -34,7 +32,7 @@ public class ClientImpl implements Client {
             int index = random.nextInt(data.size());
             int value = data.remove(index);
             Request request = new Request(value);
-            Thread.sleep(randomUtil.getRandomFromOneHundredToFiveHundred());
+            Thread.sleep(random.nextInt(ConstTime.ONE_HUNDRED, ConstTime.FIVE_HUNDRED));
             accumulator += server.processRequest(request);
         }
         return server.getSharedResourceSize();
